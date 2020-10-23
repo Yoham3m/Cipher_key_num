@@ -16,5 +16,9 @@ Built with
 Python. 
 
 
+![part1](https://user-images.githubusercontent.com/52131685/96950028-108c1d00-1535-11eb-8ad8-56c8f6f8c700.gif)
+
+
+
 Contact
 HongjunYu https://www.facebook.com/hongjun.yu.3705 
