@@ -1,0 +1,124 @@
+#creat a list of uppcase of letter from A to Z
+cipher_upper = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O",
+                "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
+#creat a list of lowcase of letter from a to z
+cipher_lower = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o",
+                "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"]
+
+
+# create the function to limit the key in the range of[0,26]
+def key_define(key):
+    # if the integer of key is in the range [0,26]
+    if 0 < int(key) < 26:
+        # just return the  riginal key
+        return key
+    # if the integer of key is out of the range [0,26]
+    else:
+        # creat loop to keep the key in the range of [0,26]
+        while key > 26:
+            key -= 26
+        return key
+
+# creat the function called left_encrypt that can do the encrypt for the left side 
+def left_side(sentence, key):
+    # set new variable called result
+    result = ""
+    #make a loop to deal with each letter in the sentence
+    for letter in sentence:
+        # for  some symbol 
+        if letter not in cipher_upper and letter not in cipher_lower:
+            result = result + letter
+        # for the words
+        elif not letter.isupper():
+            # find the location of the lettle
+            pos = cipher_lower.index(letter)
+            # if the number(postition - key) is less than 0
+            if int(pos - key) < 0:
+                # get the value of result based on the lowercase of the cipher array
+                result = result + cipher_lower[pos - key + len(cipher_lower)]
+            # else the number(postition - key) is more  than 0      
+            else:
+                # get the value of result based on the lowercase of the cipher array
+                result = result + cipher_lower[int(pos - key)]
+        else:
+            # find the location of the lettle
+            pos = cipher_upper.index(letter)
+            # if the number(postition-key) is less than 0
+            if int(pos - key) < 0:
+                # get the value of result based on the uppercase of the cipher array
+                result = result + cipher_upper[pos - key + len(cipher_upper)]
+            # else the number(postition - key) is more  than 0   
+            else:
+                # get the value of result based on the uppercase of the cipher array
+                result = result + cipher_upper[int(pos - key)]
+
+    # return the result
+    return result
+
+def right_side(sentence, key):
+    result = ""
+    for letter in sentence:
+        # for  some symbol
+        if letter not in cipher_upper and letter not in cipher_lower:
+            result = result + letter
+        # for the words
+        elif not letter.isupper():
+            # find the location of the lettle
+            pos = cipher_lower.index(letter)
+            
+            if int(pos + key) >= len(cipher_lower):
+                result = result + cipher_lower[pos + key - len(cipher_lower)]
+            else:
+                result = result + cipher_lower[int(pos + key)]
+        else:
+           
+            pos = cipher_upper.index(letter)
+            
+            if int(pos + key) >= len(cipher_upper):
+                result = result + cipher_upper[pos + key - len(cipher_upper)]
+            else:
+                result = result + cipher_upper[int(pos + key)]
+    return result
+ 
+results = []
+
+filename = input("Please tell me the filename (including the file format): ")
+
+# ask the user to enter the value of key
+key = int(input("Please enter your key: "))
+
+# ask the user to choose one side to shift
+shift = input("Does left side is what you want to shift to?  (Y/N)")
+
+if shift[0:1].capitalize() == "Y":
+    
+    file = open(filename, "r", encoding='utf-8')
+    for line in file:
+        # print(encrypt(line.upper(),key))
+        results.append(left_side(line, key))
+    file.close()
+
+    print(*results, sep="")
+
+else:
+    file = open(filename, "r", encoding='utf-8')
+    for line in file:
+        # print(encrypt(line.upper(),key))
+        results.append(right_side(line, key))
+    file.close()
+    print(*results, sep="")
+
+save=input("Would you like to save the the detail? (Y/N)")
+if save[0:1].capitalize()=="Y":
+    file_saved=input("Create the filename (including the file format): ")
+    with open(file_saved,"a",encoding='utf-8')as f:
+        for value in results:
+                strValue = str(value)
+                f.write(strValue )
+    file.close()
+    print("saved,done the process. The file called"+ file_saved+"is in the same folder")
+else:
+    print("Done the process")
+    
+
+
